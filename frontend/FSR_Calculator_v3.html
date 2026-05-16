@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FSR Bidding Calculator &mdash; FlixBus / Greyhound</title>
+<title>FST Bidding Calculator &mdash; FlixBus / Greyhound</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -22,7 +22,8 @@
 [data-theme="light"]{--bp:#F7F7F7;--bs:#fff;--br:#fff;--bi:#F7F7F7;--bh:#f0f0f0;--tp:#353535;--ts:#444;--tm:#757575;--bd:rgba(0,0,0,.10);--bm:rgba(0,0,0,.16);--bst:rgba(0,0,0,.26);--ok-bg:#eef7cc;--ok-b:#97D700;--ok-t:#3a5f00;--wn-bg:#fff3cd;--wn-b:#e6a817;--wn-t:#7a4f00;--er-bg:#fde8ea;--er-b:#dc3545;--er-t:#8b1a24;--in-bg:#e3f0fb;--in-b:#005C99;--in-t:#003d6b}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bp);color:var(--tp);min-height:100vh;transition:background .25s,color .25s}
-[data-theme="dark"] body{background-image:url("data:image/svg+xml,%3Csvg width='60' height='48' viewBox='0 0 60 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 8L22 24L10 40' stroke='%2397D700' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none' opacity='0.06'/%3E%3Cpath d='M26 8L38 24L26 40' stroke='%2397D700' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none' opacity='0.06'/%3E%3Cpath d='M42 8L54 24L42 40' stroke='%2397D700' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none' opacity='0.06'/%3E%3C/svg%3E");background-repeat:repeat}
+[data-theme="dark"] body{background-image:url("data:image/svg+xml,%3Csvg width='72' height='56' viewBox='0 0 72 56' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 6 L22 28 L6 50' stroke='%2397D700' stroke-width='7' stroke-linecap='round' stroke-linejoin='round' fill='none' opacity='0.055'/%3E%3Cpath d='M24 6 L40 28 L24 50' stroke='%2397D700' stroke-width='7' stroke-linecap='round' stroke-linejoin='round' fill='none' opacity='0.055'/%3E%3Cpath d='M42 6 L58 28 L42 50' stroke='%2397D700' stroke-width='7' stroke-linecap='round' stroke-linejoin='round' fill='none' opacity='0.055'/%3E%3C/svg%3E");background-repeat:repeat}
+[data-theme="light"] body{background-image:url("data:image/svg+xml,%3Csvg width='72' height='56' viewBox='0 0 72 56' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 6 L22 28 L6 50' stroke='%23353535' stroke-width='7' stroke-linecap='round' stroke-linejoin='round' fill='none' opacity='0.04'/%3E%3Cpath d='M24 6 L40 28 L24 50' stroke='%23353535' stroke-width='7' stroke-linecap='round' stroke-linejoin='round' fill='none' opacity='0.04'/%3E%3Cpath d='M42 6 L58 28 L42 50' stroke='%23353535' stroke-width='7' stroke-linecap='round' stroke-linejoin='round' fill='none' opacity='0.04'/%3E%3C/svg%3E");background-repeat:repeat}
 
 /* TOPBAR */
 .topbar{background:var(--grey);border-bottom:3px solid var(--fg);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:200}
@@ -43,7 +44,7 @@ body{background:var(--bp);color:var(--tp);min-height:100vh;transition:background
 
 /* Ellipsis menu */
 .menu-wrap{position:relative}
-.menu-btn{width:40px;height:40px;border-radius:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;letter-spacing:.5px;flex-shrink:0}
+.menu-btn{width:35px;height:35px;border-radius:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;letter-spacing:.5px;flex-shrink:0}
 .menu-btn:hover{background:rgba(255,255,255,.15)}
 .menu-dropdown{display:none;position:absolute;right:0;top:40px;background:var(--bs);border:1px solid var(--bm);border-radius:10px;min-width:210px;padding:6px 0;z-index:500}
 .menu-dropdown.open{display:block}
@@ -83,6 +84,7 @@ body{background:var(--bp);color:var(--tp);min-height:100vh;transition:background
 .r2{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
 .r3{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)}
 .r4{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)}
+.r5{grid-template-columns:repeat(5,minmax(0,1fr));min-width:0}
 
 /* FIELDS */
 /* FIELD LAYOUT &mdash; flex column so label+control align consistently
@@ -124,11 +126,12 @@ body{background:var(--bp);color:var(--tp);min-height:100vh;transition:background
 .field input[type=number]{-moz-appearance:textfield}
 .field input[type=number]::-webkit-inner-spin-button,
 .field input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
-.lr-hrs,.lr-workers,.mat-qty,.mat-cost{-moz-appearance:textfield}
+.lr-hrs,.lr-workers,.mat-qty,.mat-cost,.lr-rate-override{-moz-appearance:textfield}
 .lr-hrs::-webkit-inner-spin-button,.lr-hrs::-webkit-outer-spin-button,
 .lr-workers::-webkit-inner-spin-button,.lr-workers::-webkit-outer-spin-button,
 .mat-qty::-webkit-inner-spin-button,.mat-qty::-webkit-outer-spin-button,
-.mat-cost::-webkit-inner-spin-button,.mat-cost::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.mat-cost::-webkit-inner-spin-button,.mat-cost::-webkit-outer-spin-button,
+.lr-rate-override::-webkit-inner-spin-button,.lr-rate-override::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 /* Custom spin wrapper &mdash; wraps the number input, adds up/down SVG buttons */
 .spin-wrap{position:relative;display:flex;align-items:stretch}
 .spin-wrap input[type=number]{padding-right:28px;flex:1;min-width:0}
@@ -235,9 +238,6 @@ body{background:var(--bp);color:var(--tp);min-height:100vh;transition:background
 .appr-box.er .appr-title{color:var(--er-t)}
 .appr-box.sp .appr-title{color:var(--in-t)}
 .appr-desc{font-size:12px;color:var(--ts);line-height:1.5}
-.combo-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0 0;margin-top:6px;border-top:1px solid var(--bm)}
-.combo-lbl{font-size:12px;color:var(--tm)}
-.combo-val{font-size:15px;font-weight:700;color:var(--tp)}
 
 /* LOG */
 .filter-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
@@ -305,6 +305,7 @@ table.log-tbl tr:hover td{background:var(--bh)}
   .breakdown-totals{justify-content:stretch}
   .bd-total{flex:1;min-width:80px}
   .lr-rate-badge{display:none}
+  .lr-rate-override{width:100px}
   .mat-range{display:none}
   table.log-tbl{font-size:11px;min-width:560px}
   table.log-tbl th{font-size:9px;padding:6px 8px}
@@ -365,17 +366,22 @@ table.log-tbl tr:hover td{background:var(--bh)}
 .bd-total-val{font-size:14px;font-weight:700;color:var(--tp);margin-top:1px}
 .bd-total-val.bd-combined{color:#b8e840}
 .labor-row,.mat-row{display:flex;gap:8px;margin-bottom:6px;align-items:center;flex-wrap:wrap}
-.lr-trade{flex:0 0 130px;font-size:12px;color:var(--ts);min-width:0}
+.lr-trade{flex:0 0 100px;font-size:12px;color:var(--ts);min-width:0}
 .lr-hrs{width:70px;min-width:50px;font-size:12px;background:var(--bi);color:var(--tp);border:1px solid var(--bm);border-radius:6px;padding:4px 8px;-webkit-appearance:none;appearance:none}
-.lr-workers{width:52px;min-width:40px;font-size:12px;background:var(--bi);color:var(--tp);border:1px solid var(--bm);border-radius:6px;padding:4px 8px;-webkit-appearance:none;appearance:none}
+.lr-workers{width:60px;min-width:44px;font-size:12px;background:var(--bi);color:var(--tp);border:1px solid var(--bm);border-radius:6px;padding:4px 8px;-webkit-appearance:none;appearance:none}
 .lr-workers-lbl{font-size:10px;color:var(--tm);white-space:nowrap}
 .lr-sep{width:1px;height:20px;background:var(--bd);margin:0 4px;flex-shrink:0}
 .lr-rate-badge{font-size:11px;color:var(--tm);flex:1;min-width:0}
+.lr-rate-override{width:160px;min-width:90px;font-size:12px;background:var(--bi);color:var(--tp);border:1px solid var(--bm);border-radius:6px;padding:4px 8px;-webkit-appearance:none;appearance:none;transition:border-color .15s,color .15s}
+.lr-rate-override:focus{outline:none;border-color:var(--in-b)}
+.lr-rate-override:not(:placeholder-shown){border-color:var(--in-b);color:var(--in-t)}
 .lr-total-badge{font-size:12px;font-weight:600;color:var(--fg);white-space:nowrap}
-.mat-item{flex:1;min-width:120px;background:var(--bi);color:var(--tp);border:1px solid var(--bm);border-radius:6px;padding:4px 8px;font-size:12px;font-family:'Roboto',sans-serif;-webkit-appearance:none;appearance:none}
+.mat-item{flex:1;min-width:100px;max-width:330px;background:var(--bi);color:var(--tp);border:1px solid var(--bm);border-radius:6px;padding:4px 8px;font-size:12px;font-family:'Roboto',sans-serif;-webkit-appearance:none;appearance:none}
 .mat-qty{width:60px;min-width:44px;font-size:12px;background:var(--bi);color:var(--tp);border:1px solid var(--bm);border-radius:6px;padding:4px 8px;-webkit-appearance:none;appearance:none}
 .mat-range{font-size:11px;color:var(--tm);white-space:nowrap}
-.mat-cost{width:90px;min-width:60px;font-size:12px;background:var(--bi);color:var(--tp);border:1px solid var(--bm);border-radius:6px;padding:4px 8px}
+.mat-cost{width:160px;min-width:120px;font-size:12px;background:var(--bi);color:var(--tp);border:1px solid var(--bm);border-radius:6px;padding:4px 8px;transition:border-color .15s,color .15s}
+.mat-cost:focus{outline:none;border-color:var(--in-b)}
+.mat-cost:not(:placeholder-shown){border-color:var(--in-b);color:var(--in-t)}
 .add-mat-btn{margin-top:6px;padding:6px 14px;font-size:11px;font-weight:600;color:var(--fg);background:transparent;border:1px dashed var(--fg-dim2);border-radius:6px;cursor:pointer;transition:background .15s;min-height:36px}
 .add-mat-btn:hover{background:var(--fg-dim)}
 .remove-mat-btn{flex-shrink:0;width:32px;height:32px;padding:0;font-size:12px;line-height:32px;text-align:center;color:var(--tp-dim);background:transparent;border:1px solid var(--bm);border-radius:6px;cursor:pointer;transition:color .15s,background .15s;display:flex;align-items:center;justify-content:center}
@@ -498,7 +504,6 @@ table.log-tbl tr:hover td{background:var(--bh)}
         <div class="section-label">Pricing Summary</div>
         <div class="metrics" id="metricGrid"></div>
         <div id="splitPanel" style="display:none;margin-top:12px"></div>
-        <div id="comboTotal"></div>
         <div id="apprResult"></div>
       </div>
       <button class="btn-save" onclick="saveToLog()">
@@ -1133,7 +1138,7 @@ function saveState() {
     priority: document.getElementById('priority').value,
     date: document.getElementById('reqDate').value,
     desc: document.getElementById('reqDesc').value,
-    services: services.map(s=>({idx:s.idx,on:s.on,catVal:s.catVal,svcId:s.svcId,qty:s.qty,tier:s.tier,travel:s.travel,bdSnap:s.bdSnap||{}})),
+    services: services.map(s=>({idx:s.idx,on:s.on,catVal:s.catVal,svcId:s.svcId,qty:s.qty,tier:s.tier,travel:s.travel,travelOverride:s.travelOverride||'',bdSnap:s.bdSnap||{}})),
     bids: bids,
     bidCount: bidCount,
     svcCount: svcCount,
@@ -1185,7 +1190,8 @@ function restoreState() {
         svcId:  s.svcId  || '',
         qty:    s.qty    || 0,
         tier:   s.tier   || '',
-        travel: s.travel || 'yes',
+        travel:         s.travel         || 'yes',
+        travelOverride: s.travelOverride != null ? s.travelOverride : '',
         bdSnap: s.bdSnap || {}
       }));
       svcCount = Math.max(svcCount, ...services.map(s=>s.idx));
@@ -1194,9 +1200,9 @@ function restoreState() {
       // No services saved — render the default two slots but don't touch other fields
       services = [];
       svcCount = 1;
-      services.push({idx:1, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes'});
+      services.push({idx:1, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes', travelOverride:'', bdSnap:{}});
       svcCount = 2;
-      services.push({idx:2, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes'});
+      services.push({idx:2, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes', travelOverride:'', bdSnap:{}});
       renderServicesDOM();
     }
   } catch(e) {
@@ -1285,9 +1291,9 @@ function confirmClear() {
   // Reset services &mdash; Service 1 + static Service 2 slot only
   services = [];
   svcCount = 1;
-  services.push({idx:1, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes'}); // Service 1
+  services.push({idx:1, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes', travelOverride:'', bdSnap:{}}); // Service 1
   svcCount = 2;
-  services.push({idx:2, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes'}); // Static "Add 2nd" toggle
+  services.push({idx:2, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes', travelOverride:'', bdSnap:{}}); // Static "Add 2nd" toggle
   renderServicesDOM();
   // Reset bids to one empty bid
   bids = []; bidCount = 0;
@@ -1328,6 +1334,31 @@ function populateCities() {
   const lf=document.getElementById('fcity');
   CITIES.forEach(c=>{const o=document.createElement('option');o.value=c.city;o.textContent=c.city+', '+c.state;lf.appendChild(o);});
 }
+// Returns the effective labor rate for a trade row: override if set, else rates.med × city.laborMult
+function getEffectiveLaborRate(svc, trade, city, tradeIdx) {
+  const overrideEl = svc ? document.getElementById('lrate_' + svc.idx + '_' + tradeIdx) : null;
+  if (overrideEl && overrideEl.value !== '') {
+    const v = parseFloat(overrideEl.value);
+    if (!isNaN(v) && v > 0) return v;
+  }
+  const r = LABOR_RATES[trade] || {med:0};
+  return r.med * city.laborMult;
+}
+
+// Returns the effective travel cost for a service: override if set, else benchmark rate × city mult
+function getTravelCost(svc, s, city) {
+  if (!svc || svc.travel !== 'yes' || !s) return 0;
+  const override = parseFloat(svc.travelOverride);
+  if (!isNaN(override) && svc.travelOverride !== '') return override;
+  return (s.travel || 0) * city.laborMult;
+}
+
+// Always returns market travel rate — ignores any override (used for Benchmark)
+function getMarketTravelCost(svc, s, city) {
+  if (!svc || svc.travel !== 'yes' || !s) return 0;
+  return (s.travel || 0) * city.laborMult;
+}
+
 function getCity() {
   const s=document.getElementById('citySelect');
   if (!s.value) return {id:'',city:'',state:'',tier:'',laborMult:1,matMult:1,mult:1};
@@ -1355,7 +1386,9 @@ function addServiceSlot(restored) {
     svcId:  restored ? restored.svcId  : '',
     qty:    restored ? restored.qty    : 0,
     tier:   restored ? restored.tier   : '',
-    travel: restored ? restored.travel : 'yes'
+    travel:         restored ? restored.travel         : 'yes',
+    travelOverride: restored ? (restored.travelOverride || '') : '',
+    bdSnap:         restored ? (restored.bdSnap || {})  : {}
   };
   services.push(svc);
   renderServicesDOM();
@@ -1370,6 +1403,8 @@ function snapshotAllBreakdowns() {
       snap['lhrs_' + i] = el.value;
       const wEl = document.getElementById('lwrk_' + svc.idx + '_' + i);
       if (wEl) snap['lwrk_' + i] = parseInt(wEl.value) || 1;
+      const rEl = document.getElementById('lrate_' + svc.idx + '_' + i);
+      if (rEl) snap['lrate_' + i] = rEl.value;
     });
     const mr = document.getElementById('mat_rows_' + svc.idx);
     if (mr) {
@@ -1460,7 +1495,24 @@ function renderServicesDOM() {
         qtySel.oninput = ()=>{svc.qty=parseFloat(qtySel.value)||0;saveState();recalc();};
       }
       if (tierSel){ tierSel.value= svc.tier||''; tierSel.classList.toggle('placeholder-active', !svc.tier); tierSel.onchange=()=>{svc.tier=tierSel.value;tierSel.classList.remove('placeholder-active');saveState();recalc();}; }
-      if (travSel){ travSel.value= svc.travel;travSel.onchange= ()=>{svc.travel=travSel.value;saveState();recalc();}; }
+      if (travSel){
+        travSel.value = svc.travel;
+        travSel.onchange = () => {
+          svc.travel = travSel.value;
+          const overrideField = document.getElementById('trav_override_field_' + svc.idx);
+          if (overrideField) overrideField.style.display = svc.travel === 'yes' ? 'flex' : 'none';
+          saveState(); recalc();
+        };
+      }
+      const travOverrideEl = document.getElementById('trav_override_' + svc.idx);
+      if (travOverrideEl) {
+        travOverrideEl.oninput = () => {
+          svc.travelOverride = travOverrideEl.value;
+          travOverrideEl.style.borderColor = travOverrideEl.value ? 'var(--in-b)' : '';
+          travOverrideEl.style.color       = travOverrideEl.value ? 'var(--in-t)' : '';
+          saveState(); recalc();
+        };
+      }
       updateUnitInfo(svc);
     });
   } finally {
@@ -1483,7 +1535,7 @@ function buildServiceFields(svc, ordinal) {
       <div class="field"><label>Category</label><select id="cat_${svc.idx}" class="${isBlank?'placeholder-active':''}">${catPlaceholder}${cats}</select></div>
       <div class="field"><label>Subtype</label><select id="svc_${svc.idx}" class="${!svc.svcId?'placeholder-active':''}">${svcPlaceholder}${svcs}</select></div>
     </div>
-    <div class="row r4">
+    <div class="row r5">
       <div class="field"><label>Quantity</label>
         <div class="spin-wrap">
           <input type="number" id="qty_${svc.idx}" value="${qtyVal}" placeholder="e.g. 1, 500, 25" min="0.01" step="any">
@@ -1506,6 +1558,13 @@ function buildServiceFields(svc, ordinal) {
           <option value="yes"${svc.travel==='yes'?' selected':''}>Yes</option>
           <option value="no"${svc.travel==='no'?' selected':''}>No</option>
         </select>
+      </div>
+      <div class="field" id="trav_override_field_${svc.idx}" style="display:${svc.travel==='yes'?'flex':'none'}">
+        <label>Travel Override ($)</label>
+        <input type="number" id="trav_override_${svc.idx}" min="0" step="0.01"
+          placeholder="Benchmark rate"
+          value="${svc.travelOverride||''}"
+          style="${svc.travelOverride?'border-color:var(--in-b);color:var(--in-t)':''}">
       </div>
       <div class="field"><label>Unit</label><input type="text" id="unit_${svc.idx}" readonly></div>
     </div>
@@ -1561,7 +1620,7 @@ function toggleService(idx) {
     // we don't double-add.
     if (svcIndex === services.length - 1) {
       svcCount = Math.max(svcCount, ...services.map(s=>s.idx)) + 1;
-      services.push({idx:svcCount, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes'});
+      services.push({idx:svcCount, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes', travelOverride:'', bdSnap:{}});
     }
   } else {
     // â”€â”€ Turning OFF â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -1577,10 +1636,9 @@ function toggleService(idx) {
       // No new slot pushed &mdash; [1] itself becomes the idle toggle.
     } else {
       // â”€â”€ Dynamic slot (index 2+) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-      // Remove this slot AND everything after it completely.
-      // The entry that was just before it (now last in array)
-      // becomes the visible "Add A Nth Service" toggle.
-      services = services.slice(0, svcIndex);
+      // Keep this slot (already reset above) as the new idle toggle,
+      // remove everything after it.
+      services = services.slice(0, svcIndex + 1);
     }
   }
 
@@ -1617,9 +1675,13 @@ function updateUnitInfo(svc) {
   if (unitEl) unitEl.value = unitDisplay;
   if (!infoEl) return;
   const city = getCity();
+  const travOverrideEl = document.getElementById('trav_override_' + svc.idx);
+  if (travOverrideEl) {
+    const marketTravel = (s.travel || 0) * city.laborMult;
+    travOverrideEl.placeholder = marketTravel > 0 ? `Benchmark: $${marketTravel.toFixed(2)}` : 'Benchmark rate';
+  }
   const qty  = svc.qty || 1;
-  const tr   = svc.travel === 'yes';
-  const travelCost = tr ? (s.travel||0) * qty : 0;
+  const travelCost = getTravelCost(svc, s, city) * qty;
   const travelLabel = travelCost > 0 ? ` + ${fmt(travelCost)} Travel` : '';
   // Badges show combined rate card totals scaled by qty.
   let aLbase = 0, aMbase = 0, aHbase = 0;
@@ -1678,14 +1740,18 @@ function buildBreakdown(svc) {
         const adjMed  = Math.round(rates.med  * city.laborMult);
         const adjHigh = Math.round(rates.high * city.laborMult);
         // Unit-based: hrs/unit × qty scales with measurement.
-        // Per-visit/per-unit: default 1 so rate×1 = benchmark; user can spin to adjust.
-        const hrsAdjusted = s.ub ? parseFloat((lp.hrs * qty).toFixed(4)) : 1;
+        // Per-visit/per-unit: default to service benchmark hrs so proposal starts at benchmark.
+        const hrsAdjusted = s.ub ? parseFloat((lp.hrs * qty).toFixed(4)) : (lp.hrs || 0);
         const workersDefault = snap['lwrk_' + i] !== undefined ? snap['lwrk_' + i] : 1;
-        const totalMed = adjMed * hrsAdjusted * workersDefault;
+        const savedRate = snap['lrate_' + i] || '';
+        const effectiveRate = savedRate !== '' ? parseFloat(savedRate) : adjMed;
+        const totalMed = effectiveRate * hrsAdjusted * workersDefault;
         const uid  = 'lhrs_'  + svc.idx + '_' + i;
         const wuid = 'lwrk_'  + svc.idx + '_' + i;
+        const ruid = 'lrate_' + svc.idx + '_' + i;
         return `<div class="labor-row">
           <span class="lr-trade">${lp.trade}</span>
+          <span class="lr-workers-lbl">Workers</span>
           <div class="spin-wrap">
             <input type="number" class="lr-workers" id="${wuid}" value="${workersDefault}" min="1" step="1" title="Number of workers" oninput="recalcBreakdown(${svc.idx})">
             <div class="spin-btns">
@@ -1693,8 +1759,8 @@ function buildBreakdown(svc) {
               <button type="button" class="spin-btn" onmousedown="event.preventDefault()" onclick="stepQty('${wuid}',-1)" tabindex="-1"><svg viewBox="0 0 8 5" fill="none"><path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             </div>
           </div>
-          <span class="lr-workers-lbl">Workers</span>
           <div class="lr-sep"></div>
+          <span class="lr-workers-lbl">Hrs</span>
           <div class="spin-wrap">
             <input type="number" class="lr-hrs" id="${uid}" value="${hrsAdjusted}" min="0" step="0.25" title="Labor hours" oninput="recalcBreakdown(${svc.idx})">
             <div class="spin-btns">
@@ -1702,8 +1768,14 @@ function buildBreakdown(svc) {
               <button type="button" class="spin-btn" onmousedown="event.preventDefault()" onclick="stepQty('${uid}',-1)" tabindex="-1"><svg viewBox="0 0 8 5" fill="none"><path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             </div>
           </div>
-          <span class="lr-workers-lbl">Hrs</span>
-          <span class="lr-rate-badge">City-adjusted: $${adjLow}–$${adjHigh}/Hr &middot; Med $${adjMed}/Hr</span>
+          <span class="lr-rate-badge">City-adjusted: $${adjLow}–$${adjHigh}/Hr</span>
+          <div class="spin-wrap">
+            <input type="number" class="lr-rate-override" id="${ruid}" value="${savedRate}" min="0" step="1" placeholder="Benchmark: $${adjMed}/Hr" title="Override labor rate — does not affect Benchmark" oninput="recalcBreakdown(${svc.idx})">
+            <div class="spin-btns">
+              <button type="button" class="spin-btn" onmousedown="event.preventDefault()" onclick="stepQty('${ruid}',1)" tabindex="-1"><svg viewBox="0 0 8 5" fill="none"><path d="M1 4L4 1L7 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <button type="button" class="spin-btn" onmousedown="event.preventDefault()" onclick="stepQty('${ruid}',-1)" tabindex="-1"><svg viewBox="0 0 8 5" fill="none"><path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            </div>
+          </div>
           <span class="lr-total-badge" id="ltot_${svc.idx}_${i}">${fmt(totalMed)}</span>
         </div>`;
       }).join('');
@@ -1735,6 +1807,7 @@ function buildBreakdown(svc) {
         const mat = MATERIALS.find(m => m.id === mp.matId);
         const adjLow  = mat ? Math.round(mat.low  * city.matMult * 100) / 100 : 0;
         const adjHigh = mat ? Math.round(mat.high * city.matMult * 100) / 100 : 0;
+        const adjMedMat = mat ? Math.round(mat.med * city.matMult * 100) / 100 : 0;
         const rangeText = mat ? `$${adjLow}–$${adjHigh} / ${mat.unit}` : '';
         const uid = 'mrow_' + svc.idx + '_' + i;
         const matOptions = catMats.map(m =>
@@ -1754,7 +1827,7 @@ function buildBreakdown(svc) {
           </div>
           <span class="mat-range" id="mrange_${svc.idx}_${i}">${rangeText}</span>
           <div class="spin-wrap">
-            <input type="number" class="mat-cost" id="mcost_${svc.idx}_${i}" value="${mp.cost}" placeholder="Vendor $/unit" min="0" step="1" title="Vendor cost per unit" oninput="recalcBreakdown(${svc.idx})">
+            <input type="number" class="mat-cost" id="mcost_${svc.idx}_${i}" value="${mp.cost}" placeholder="Benchmark: $${adjMedMat}" min="0" step="1" title="Vendor cost per unit" oninput="recalcBreakdown(${svc.idx})">
             <div class="spin-btns">
               <button type="button" class="spin-btn" onmousedown="event.preventDefault()" onclick="stepQty('mcost_${svc.idx}_${i}',1)" tabindex="-1"><svg viewBox="0 0 8 5" fill="none"><path d="M1 4L4 1L7 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
               <button type="button" class="spin-btn" onmousedown="event.preventDefault()" onclick="stepQty('mcost_${svc.idx}_${i}',-1)" tabindex="-1"><svg viewBox="0 0 8 5" fill="none"><path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -1777,16 +1850,17 @@ function buildBreakdown(svc) {
       const adjHigh = Math.round(rates.high * city.laborMult);
       const laborRow = el.closest('.labor-row');
       const badge = laborRow && laborRow.querySelector('.lr-rate-badge');
-      if (badge) badge.textContent = `City-adjusted: $${adjLow}–$${adjHigh}/Hr · Med $${Math.round(adjMedExact)}/Hr`;
+      if (badge) badge.textContent = `City-adjusted: $${adjLow}–$${adjHigh}/Hr`;
       const hrs = parseFloat(el.value) || 0;
       const wEl = document.getElementById('lwrk_' + svc.idx + '_' + i);
       const workers = wEl ? (parseInt(wEl.value) || 1) : 1;
-      const rowTotal = adjMedExact * hrs * workers;
+      const effectiveRate = getEffectiveLaborRate(svc, lp.trade, city, i);
+      const rowTotal = effectiveRate * hrs * workers;
       const totEl = document.getElementById('ltot_' + svc.idx + '_' + i);
       if (totEl) totEl.textContent = fmt(rowTotal);
       laborTotal += rowTotal;
     });
-    const travelCost = svc.travel === 'yes' ? (s.travel || 0) * city.laborMult : 0;
+    const travelCost = getTravelCost(svc, s, city);
     const laborWithTravel = laborTotal + travelCost;
 
     let matTotal = 0;
@@ -1819,12 +1893,16 @@ function matChanged(svcIdx, rowIdx, matId) {
   const city = getCity();
   const mat  = MATERIALS.find(m => m.id === matId);
   const rangeEl = document.getElementById('mrange_' + svcIdx + '_' + rowIdx);
+  const costEl = document.getElementById('mcost_' + svcIdx + '_' + rowIdx);
   if (rangeEl && mat) {
     const adjLow  = Math.round(mat.low  * city.matMult * 100) / 100;
     const adjHigh = Math.round(mat.high * city.matMult * 100) / 100;
+    const adjMed  = Math.round(mat.med  * city.matMult * 100) / 100;
     rangeEl.textContent = `$${adjLow}–$${adjHigh} / ${mat.unit}`;
+    if (costEl) costEl.placeholder = `Benchmark: $${adjMed}`;
   } else if (rangeEl) {
     rangeEl.textContent = '';
+    if (costEl) costEl.placeholder = 'Vendor $/unit';
   }
   recalcBreakdown(svcIdx);
 }
@@ -1885,9 +1963,8 @@ function recalcBreakdown(svcIdx) {
       const hrs    = parseFloat(hrsEl.value) || 0;
       const wEl    = document.getElementById('lwrk_' + svcIdx + '_' + i);
       const workers = wEl ? (parseInt(wEl.value) || 1) : 1;
-      const rates  = LABOR_RATES[lp.trade] || {med: 0};
-      const adjMedExact = rates.med * city.laborMult;
-      const rowTotal = adjMedExact * hrs * workers;
+      const effectiveRate = getEffectiveLaborRate(svc, lp.trade, city, i);
+      const rowTotal = effectiveRate * hrs * workers;
       totEl.textContent = fmt(rowTotal);
       laborTotal += rowTotal;
     });
@@ -1908,7 +1985,7 @@ function recalcBreakdown(svcIdx) {
     });
   }
   // Travel cost — folded into Labor chip to match Labor Benchmark card
-  const travelCost = (s && svc.travel === 'yes') ? (s.travel || 0) * city.laborMult : 0;
+  const travelCost = getTravelCost(svc, s, city);
   const laborWithTravel = laborTotal + travelCost;
   // Update breakdown totals footer
   const lEl    = document.getElementById('bdt_labor_' + svcIdx);
@@ -2088,6 +2165,7 @@ function recalcResults() {
   let travelBench=0;
   let laborBenchMedWithTravel=0;
   let combBenchLowHoisted=0, combBenchMedHoisted=0, combBenchHighHoisted=0;
+  let laborProposalMed=0, matProposalMed=0, travelProposal=0, combProposalMedHoisted=0;
   _combBenchMedLive=0; _combBenchHighLive=0; // reset before IIFE runs
 
   // Always update split-bar panel regardless of whether bids exist
@@ -2101,13 +2179,23 @@ function recalcResults() {
       if (s.t2) pairs.push({trade:s.t2, rowKey:1});
       pairs.forEach((lp, i) => {
         const hrsEl = document.getElementById('lhrs_' + svc.idx + '_' + i);
+        const wrkEl = document.getElementById('lwrk_' + svc.idx + '_' + i);
         const hrs = hrsEl ? (parseFloat(hrsEl.value) || 0) : 0;
+        const workers = wrkEl ? (parseInt(wrkEl.value) || 1) : 1;
         const r = LABOR_RATES[lp.trade] || {low:0,med:0,high:0};
-        laborBenchLow  += r.low  * city.laborMult * hrs;
-        laborBenchMed  += r.med  * city.laborMult * hrs;
-        laborBenchHigh += r.high * city.laborMult * hrs;
+        // Unit-based: hrs spinner already holds h×qty. Non-unit-based: scale by qty here.
+        const labScale = s.ub ? 1 : qty;
+        laborBenchLow  += r.low  * city.laborMult * hrs * workers * labScale;
+        laborBenchMed  += r.med  * city.laborMult * hrs * workers * labScale;
+        laborBenchHigh += r.high * city.laborMult * hrs * workers * labScale;
+        // Proposal: same spinners, but effective rate (override or market)
+        const effectiveRate = getEffectiveLaborRate(svc, lp.trade, city, i);
+        laborProposalMed += effectiveRate * hrs * workers * labScale;
       });
-      if (svc.travel === 'yes') travelBench += (s.travel || 0) * city.laborMult;
+      // Non-unit-based: travel and materials repeat per qty unit
+      const svcScale = s.ub ? 1 : qty;
+      travelBench    += getMarketTravelCost(svc, s, city) * svcScale;
+      travelProposal += getTravelCost(svc, s, city) * svcScale;
       const mr = document.getElementById('mat_rows_' + svc.idx);
       if (mr) {
         mr.querySelectorAll('.mat-row').forEach(row => {
@@ -2118,12 +2206,14 @@ function recalcResults() {
           const m = MATERIALS.find(x => x.id === sel.value);
           if (!m) return;
           const q = qtyEl ? (parseFloat(qtyEl.value) || 0) : 0;
-          // Use vendor cost if entered, else fall back to benchmark price
+          // Benchmark always uses market rate (never vendor cost override)
+          matBenchLow  += m.low  * city.matMult * q * svcScale;
+          matBenchMed  += m.med  * city.matMult * q * svcScale;
+          matBenchHigh += m.high * city.matMult * q * svcScale;
+          // Proposal: vendor cost if entered, else market
           const hasVendorCost = costEl && costEl.value !== '';
           const vendorUnit    = hasVendorCost ? parseFloat(costEl.value) : null;
-          matBenchLow  += hasVendorCost ? vendorUnit * q : m.low  * city.matMult * q;
-          matBenchMed  += hasVendorCost ? vendorUnit * q : m.med  * city.matMult * q;
-          matBenchHigh += hasVendorCost ? vendorUnit * q : m.high * city.matMult * q;
+          matProposalMed += (hasVendorCost ? vendorUnit * q : m.med * city.matMult * q) * svcScale;
         });
       }
     });
@@ -2137,7 +2227,8 @@ function recalcResults() {
     combBenchLowHoisted  = combBenchLow;
     combBenchMedHoisted  = combBenchMed;
     combBenchHighHoisted = combBenchHigh;
-    _combBenchMedLive    = combBenchMed;
+    combProposalMedHoisted = (laborProposalMed + travelProposal) + matProposalMed;
+    _combBenchMedLive    = combProposalMedHoisted;
     _combBenchHighLive   = combBenchHigh;
     const laborSharePct  = combBenchMed > 0 ? Math.round((laborBenchMed  / combBenchMed) * 100) : 0;
     const travelSharePct = combBenchMed > 0 ? Math.round((travelBench     / combBenchMed) * 100) : 0;
@@ -2145,16 +2236,27 @@ function recalcResults() {
     // Build trade + material rows from live DOM
     const tradeRows = [];
     const matRows = [];
+    let tradeTotal = 0;
+    let matTotal = 0;
+    let totalHrs = 0;
+    let totalMatQty = 0;
     activeSvcs.forEach(svc => {
       const s = SERVICES.find(x => x.id === svc.svcId);
       if (!s) return;
       [[s.t1, s.h1, 0],[s.t2, s.h2, 1]].forEach(([trade, defHrs, i]) => {
         if (!trade) return;
         const hrsEl = document.getElementById('lhrs_' + svc.idx + '_' + i);
+        const wrkEl = document.getElementById('lwrk_' + svc.idx + '_' + i);
         const hrs = hrsEl ? (parseFloat(hrsEl.value) || 0) : (defHrs || 0);
-        const r = LABOR_RATES[trade] || {med:0};
-        const adjRate = Math.round(r.med * city.laborMult);
-        tradeRows.push(`<div style="display:flex;justify-content:space-between;gap:16px;font-size:11px;margin-bottom:3px"><span style="color:var(--tp);font-weight:500">${trade}</span><span style="color:var(--ts)">${hrs} Hr${hrs!==1?'s':''} @ $${adjRate}/Hr</span></div>`);
+        const workers = wrkEl ? (parseInt(wrkEl.value) || 1) : 1;
+        const effectiveRate = getEffectiveLaborRate(svc, trade, city, i);
+        const adjRate = Math.round(effectiveRate);
+        const rowAmt = effectiveRate * hrs * workers;
+        tradeTotal += rowAmt;
+        totalHrs += hrs * workers;
+        const rateIsOverridden = document.getElementById('lrate_' + svc.idx + '_' + i)?.value !== '';
+        const rateLabel = rateIsOverridden ? `<span style="color:var(--in-t);font-size:10px"> (Proposal)</span>` : `<span style="color:var(--tm);font-size:10px"> (Benchmark)</span>`;
+        tradeRows.push(`<div style="display:flex;justify-content:space-between;gap:16px;font-size:11px;margin-bottom:3px"><span style="color:var(--tp);font-weight:500">${trade}${rateLabel}</span><span style="color:var(--ts)">${hrs} Hr${hrs!==1?'s':''} × ${workers} Worker${workers!==1?'s':''} @ $${adjRate}/Hr = ${fmt(rowAmt)}</span></div>`);
       });
       const mr = document.getElementById('mat_rows_' + svc.idx);
       if (mr) {
@@ -2168,7 +2270,11 @@ function recalcResults() {
           const q = qtyEl ? (parseFloat(qtyEl.value) || 0) : 0;
           const hasVendor = costEl && costEl.value !== '';
           const unitCost = hasVendor ? parseFloat(costEl.value) : Math.round(m.med * city.matMult * 100) / 100;
-          matRows.push(`<div style="display:flex;justify-content:space-between;gap:16px;font-size:11px;margin-bottom:3px"><span style="color:var(--tp);font-weight:500">${m.item}</span><span style="color:var(--ts)">${q} × $${unitCost.toFixed(2)}</span></div>`);
+          const rowAmt = unitCost * q;
+          matTotal += rowAmt;
+          totalMatQty += q;
+          const matLabel = hasVendor ? `<span style="color:var(--in-t);font-size:10px"> (Proposal)</span>` : `<span style="color:var(--tm);font-size:10px"> (Benchmark)</span>`;
+          matRows.push(`<div style="display:flex;justify-content:space-between;gap:16px;font-size:11px;margin-bottom:3px"><span style="color:var(--tp);font-weight:500">${m.item}${matLabel}</span><span style="color:var(--ts)">${q} × $${unitCost.toFixed(2)} = ${fmt(rowAmt)}</span></div>`);
         });
       }
     });
@@ -2176,50 +2282,48 @@ function recalcResults() {
     splitEl.innerHTML = `<div class="metrics">
       <div class="metric" style="grid-column:span 4">
         <div class="m-lbl">Cost Breakdown</div>
-        <div style="display:flex;gap:20px;align-items:flex-start;margin-top:4px">
-          <div style="flex:1">
-            <div class="m-val" style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">${(()=>{
-              const slots = [{pct:laborSharePct,lbl:'Labor'},{pct:matSharePct,lbl:'Materials'}];
-              if(travelSharePct>0) slots.push({pct:travelSharePct,lbl:'Travel'});
-              slots.sort((a,b)=>b.pct-a.pct);
-              const max=slots[0].pct;
-              return slots.map(sl=>{
-                const fs = max>0 ? (20 - Math.round((max-sl.pct)/max*8)) : 20;
-                let col;
-                if (sl.lbl === 'Travel') {
-                  col = sl.pct > 25 ? 'var(--er-t)' : sl.pct > 15 ? 'var(--wn-t)' : sl===slots[0] ? 'var(--tp)' : 'var(--tm)';
-                } else if (sl.lbl === 'Labor') {
-                  col = sl.pct > 85 ? 'var(--er-t)' : sl.pct > 70 ? 'var(--wn-t)' : sl===slots[0] ? 'var(--tp)' : 'var(--tm)';
-                } else if (sl.lbl === 'Materials') {
-                  col = sl.pct > 80 ? 'var(--er-t)' : sl.pct > 65 ? 'var(--wn-t)' : sl===slots[0] ? 'var(--tp)' : 'var(--tm)';
-                } else {
-                  col = sl===slots[0] ? 'var(--tp)' : 'var(--tm)';
-                }
-                return `<span style="font-size:${fs}px;color:${col}">${sl.pct}% ${sl.lbl}</span>`;
-              }).join('');
-            })()}</div>
-            <div class="m-sub" style="margin-top:6px">${(()=>{
-              const sub = [{pct:laborSharePct,lbl:'labor',val:laborBenchMed},{pct:matSharePct,lbl:'materials',val:matBenchMed}];
-              if(travelSharePct>0) sub.push({pct:travelSharePct,lbl:'travel',val:travelBench});
-              sub.sort((a,b)=>b.pct-a.pct);
-              return sub.map(s=>fmt(s.val)+' '+s.lbl).join(' &middot; ');
-            })()}</div>
-            <div style="margin-top:10px;font-size:12px;color:var(--ts);line-height:1.6">${(()=>{
-              const driver = laborSharePct>=matSharePct && laborSharePct>=travelSharePct ? 'labor'
-                           : matSharePct>=travelSharePct ? 'materials' : 'travel';
-              const insights = {
-                labor: `<strong style="color:var(--tp)">Labor-driven job.</strong> The majority of this cost is in trade hours.`,
-                materials: `<strong style="color:var(--tp)">Materials-driven job.</strong> Bulk material cost is the dominant factor.`,
-                travel: `<strong style="color:var(--tp)">Travel-driven job.</strong> Logistics are eating a disproportionate share.`
-              };
-              return insights[driver];
-            })()}</div>
-          </div>
-          <div style="flex:1;border-left:1px solid var(--bd);padding-left:16px">
-            ${tradeRows.join('')}
-            ${matRows.length ? `<div style="height:1px;background:var(--bd);margin:6px 0"></div>${matRows.join('')}` : ''}
-            ${travelBench > 0 ? `<div style="height:1px;background:var(--bd);margin:6px 0"></div><div style="display:flex;justify-content:space-between;gap:16px;font-size:11px;margin-bottom:3px"><span style="color:var(--tp);font-weight:500">Travel</span><span style="color:var(--ts)">${fmt(travelBench)}</span></div>` : ''}
-          </div>
+        <div style="margin-top:4px">
+          <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap" class="m-val">${(()=>{
+            const slots = [{pct:laborSharePct,lbl:'Labor'},{pct:matSharePct,lbl:'Materials'}];
+            if(travelSharePct>0) slots.push({pct:travelSharePct,lbl:'Travel'});
+            slots.sort((a,b)=>b.pct-a.pct);
+            const max=slots[0].pct;
+            return slots.map(sl=>{
+              const fs = max>0 ? (20 - Math.round((max-sl.pct)/max*8)) : 20;
+              let col;
+              if (sl.lbl === 'Travel') {
+                col = sl.pct > 25 ? 'var(--er-t)' : sl.pct > 15 ? 'var(--wn-t)' : sl===slots[0] ? 'var(--tp)' : 'var(--tm)';
+              } else if (sl.lbl === 'Labor') {
+                col = sl.pct > 85 ? 'var(--er-t)' : sl.pct > 70 ? 'var(--wn-t)' : sl===slots[0] ? 'var(--tp)' : 'var(--tm)';
+              } else if (sl.lbl === 'Materials') {
+                col = sl.pct > 80 ? 'var(--er-t)' : sl.pct > 65 ? 'var(--wn-t)' : sl===slots[0] ? 'var(--tp)' : 'var(--tm)';
+              } else {
+                col = sl===slots[0] ? 'var(--tp)' : 'var(--tm)';
+              }
+              return `<span style="font-size:${fs}px;color:${col}">${sl.pct}% ${sl.lbl}</span>`;
+            }).join('');
+          })()}</div>
+          <div class="m-sub" style="margin-top:6px">${(()=>{
+            const sub = [{pct:laborSharePct,lbl:'labor',val:laborBenchMed},{pct:matSharePct,lbl:'materials',val:matBenchMed}];
+            if(travelSharePct>0) sub.push({pct:travelSharePct,lbl:'travel',val:travelBench});
+            sub.sort((a,b)=>b.pct-a.pct);
+            return sub.map(s=>fmt(s.val)+' '+s.lbl).join(' &middot; ');
+          })()}</div>
+          <div style="margin-top:10px;font-size:12px;color:var(--ts);line-height:1.6">${(()=>{
+            const driver = laborSharePct>=matSharePct && laborSharePct>=travelSharePct ? 'labor'
+                         : matSharePct>=travelSharePct ? 'materials' : 'travel';
+            const insights = {
+              labor: `<strong style="color:var(--tp)">Labor-driven job.</strong> The majority of this cost is in trade hours.`,
+              materials: `<strong style="color:var(--tp)">Materials-driven job.</strong> Bulk material cost is the dominant factor.`,
+              travel: `<strong style="color:var(--tp)">Travel-driven job.</strong> Logistics are eating a disproportionate share.`
+            };
+            return insights[driver];
+          })()}</div>
+          <div style="height:1px;background:var(--bd);margin:12px 0"></div>
+          ${tradeRows.join('')}
+          ${tradeRows.length ? `<div style="display:flex;justify-content:space-between;gap:16px;font-size:11px;margin-top:4px;padding-top:4px;border-top:1px solid var(--bd)"><span style="color:var(--tm);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:.04em">Labor Total <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--tm)">${totalHrs % 1 === 0 ? totalHrs : totalHrs.toFixed(2)} Hr${totalHrs !== 1 ? 's' : ''}</span></span><span style="color:var(--tp);font-weight:600">${fmt(tradeTotal)}</span></div>` : ''}
+          ${matRows.length ? `<div style="height:1px;background:var(--bd);margin:8px 0"></div>${matRows.join('')}<div style="display:flex;justify-content:space-between;gap:16px;font-size:11px;margin-top:4px;padding-top:4px;border-top:1px solid var(--bd)"><span style="color:var(--tm);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:.04em">Materials Total <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--tm)">${totalMatQty % 1 === 0 ? totalMatQty : totalMatQty.toFixed(2)} unit${totalMatQty !== 1 ? 's' : ''}</span></span><span style="color:var(--tp);font-weight:600">${fmt(matTotal)}</span></div>` : ''}
+          ${travelBench > 0 ? `<div style="height:1px;background:var(--bd);margin:8px 0"></div><div style="display:flex;justify-content:space-between;gap:16px;font-size:11px;margin-bottom:3px"><span style="color:var(--tp);font-weight:500">Travel${(()=>{const hasTO=activeSvcs.some(sv=>sv.travelOverride!=='');return hasTO?`<span style="color:var(--in-t);font-size:10px"> (Proposal)</span>`:`<span style="color:var(--tm);font-size:10px"> (Benchmark)</span>`;})()}</span><span style="color:var(--ts)">${fmt(travelProposal)}</span></div><div style="display:flex;justify-content:space-between;gap:16px;font-size:11px;margin-top:4px;padding-top:4px;border-top:1px solid var(--bd)"><span style="color:var(--tm);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:.04em">Travel Total</span><span style="color:var(--tp);font-weight:600">${fmt(travelProposal)}</span></div>` : ''}
         </div>
         <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--bd)">${(()=>{
           const driver = laborSharePct>=matSharePct && laborSharePct>=travelSharePct ? 'labor'
@@ -2308,9 +2412,9 @@ function recalcResults() {
     if (!s) return;
     const qty = svc.qty || 1;
     let sMed=0, sHigh=0;
-    if (s.t1 && LABOR_RATES[s.t1]) { sMed+=LABOR_RATES[s.t1].med*city.laborMult*qty; sHigh+=LABOR_RATES[s.t1].high*city.laborMult*qty; }
-    if (s.t2 && LABOR_RATES[s.t2]) { sMed+=LABOR_RATES[s.t2].med*city.laborMult*qty; sHigh+=LABOR_RATES[s.t2].high*city.laborMult*qty; }
-    const tv = svc.travel==='yes' ? (s.travel||0)*city.laborMult*qty : 0;
+    if (s.t1 && LABOR_RATES[s.t1]) { sMed+=LABOR_RATES[s.t1].med*(s.h1||0)*city.laborMult*qty; sHigh+=LABOR_RATES[s.t1].high*(s.h1||0)*city.laborMult*qty; }
+    if (s.t2 && LABOR_RATES[s.t2]) { sMed+=LABOR_RATES[s.t2].med*(s.h2||0)*city.laborMult*qty; sHigh+=LABOR_RATES[s.t2].high*(s.h2||0)*city.laborMult*qty; }
+    const tv = getTravelCost(svc, s, city) * qty;
     if (s.m1) { const m=MATERIALS.find(x=>x.id===s.m1); if(m){ sMed+=m.med*(s.q1||0)*city.matMult*qty; sHigh+=m.high*(s.q1||0)*city.matMult*qty; }}
     if (s.m2) { const m=MATERIALS.find(x=>x.id===s.m2); if(m){ sMed+=m.med*(s.q2||0)*city.matMult*qty; sHigh+=m.high*(s.q2||0)*city.matMult*qty; }}
     if (s.m3) { const m=MATERIALS.find(x=>x.id===s.m3); if(m){ sMed+=m.med*(s.q3||0)*city.matMult*qty; sHigh+=m.high*(s.q3||0)*city.matMult*qty; }}
@@ -2318,34 +2422,29 @@ function recalcResults() {
     staticBenchHigh += sHigh + tv;
   });
 
-  const benchRef      = staticBenchMed;
-  const benchMedFinal = staticBenchMed;
-  const benchHighFinal= staticBenchHigh;
-  const diff=lowestA-benchRef;
+  const proposalRef  = combProposalMedHoisted;
+  const proposalHigh = combProposalMedHoisted + (combBenchHighHoisted - combBenchMedHoisted);
+  const diff = lowestA - combProposalMedHoisted;
 
   document.getElementById('metricGrid').innerHTML=`
-    <div class="metric"><div class="m-lbl">Benchmark</div><div class="m-val">${fmt(benchRef)}</div><div class="m-sub">${city.city||'No city'} &middot; ${city.laborMult.toFixed(2)}x &middot; labor + materials${travelBench>0?' + travel':''}</div></div>
-    <div class="metric"><div class="m-lbl">Lowest Bid</div><div class="m-val" style="color:${lowestA<=benchRef?'#b8e840':'var(--tp)'}">${fmt(lowestA)}</div><div class="m-sub">${lowestBid.vendor||'Unnamed Vendor'} &middot; ${valid.length} bid${valid.length!==1?'s':''}</div></div>
-    <div class="metric"><div class="m-lbl">Adjusted Benchmark</div><div class="m-val" style="color:#fff">${fmt(combBenchMedHoisted)}</div><div class="m-sub">${fmt(laborBenchMedWithTravel)} labor${travelBench>0?' + travel':''} &middot; ${fmt(matBenchMed)} materials</div></div>
-    <div class="metric"><div class="m-lbl">Effort</div><div class="m-val ${diff<=0?'good':'bad'}">${diff<=0?'-':'+'}${fmt(Math.abs(diff))}</div><div class="m-sub">${diff<=0?'Under Benchmark':'Over Benchmark'}</div></div>`;
+    <div class="metric"><div class="m-lbl">Benchmark</div><div class="m-val">${fmt(combBenchMedHoisted)}</div><div class="m-sub">${city.city||'No city'} &middot; ${city.laborMult.toFixed(2)}x &middot; labor + materials${travelBench>0?' + travel':''}</div></div>
+    <div class="metric"><div class="m-lbl">Lowest Bid</div><div class="m-val" style="color:${lowestA<=proposalRef?'#b8e840':'var(--tp)'}">${fmt(lowestA)}</div><div class="m-sub">${lowestBid.vendor||'Unnamed Vendor'} &middot; ${valid.length} bid${valid.length!==1?'s':''}</div></div>
+    <div class="metric"><div class="m-lbl">Proposal</div><div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><div class="m-val" style="color:var(--tp)">${fmt(combProposalMedHoisted)}</div>${(()=>{const pd=combProposalMedHoisted-combBenchMedHoisted;return pd===0?'':`<span style="font-size:12px;font-weight:600;color:${pd>0?'var(--er-t)':'#b8e840'}">${pd>0?'+':'−'}${fmt(Math.abs(pd))} vs. Benchmark</span>`;})()}</div><div class="m-sub">${fmt(laborProposalMed + travelProposal)} labor${travelProposal>0?' + travel':''} &middot; ${fmt(matProposalMed)} materials</div></div>
+    <div class="metric"><div class="m-lbl">Effort</div><div class="m-val ${diff<=0?'good':'bad'}">${diff<=0?'-':'+'}${fmt(Math.abs(diff))}</div><div class="m-sub">${diff<=0?'Under Proposal':'Over Proposal'}</div></div>`;
 
-  const comboEl=document.getElementById('comboTotal');
-  if (svcRefs.length>1) {
-    comboEl.innerHTML=`<div class="combo-row"><span class="combo-lbl">${svcRefs.map((r,i)=>'Svc '+(i+1)+': '+fmt(r.ref)).join(' + ')}</span><span class="combo-val">Combined Total: ${fmt(totalRef)}</span></div>`;
-  } else { comboEl.innerHTML=''; }
 
-  document.getElementById('apprResult').innerHTML=approvalHtml(lowestA,activeSvcs,benchMedFinal,benchHighFinal);
+  document.getElementById('apprResult').innerHTML=approvalHtml(lowestA,activeSvcs,proposalRef,proposalHigh);
   document.getElementById('resultsBox').style.display='block';
-  buildPrintInvoice(city,activeSvcs,valid,lowestA,lowestBid,benchRef,benchMedFinal,combBenchHighHoisted,diff);
+  buildPrintInvoice(city,activeSvcs,valid,lowestA,lowestBid,combBenchMedHoisted,proposalRef,proposalHigh,diff);
 }
 
 function approvalHtml(lowest,activeSvcs,totalMed,totalHigh) {
   const sps=[...new Set(activeSvcs.map(s=>{const x=SERVICES.find(v=>v.id===s.svcId);return x?x.sp:null;}).filter(Boolean))];
   if (sps.includes('Pest'))    return `<div class="appr-box sp"><div class="appr-title">Procurement-Managed Service</div><div class="appr-desc">Pest removal is coordinated by Procurement &mdash; loop them in before engaging any vendor.</div></div>`;
   if (lowest>50000) return `<div class="appr-box er"><div class="appr-title">Escalation Required &mdash; José Soares</div><div class="appr-desc">Lowest bid (${fmt(lowest)}) exceeds $50,000. José Soares must approve before proceeding.</div></div>`;
-  if (lowest<=totalMed) return `<div class="appr-box ok"><div class="appr-title">&#10003; Auto-Approved &mdash; Agent Can Proceed</div><div class="appr-desc">Lowest bid (${fmt(lowest)}) is at or below the adjusted medium benchmark (${fmt(totalMed)}). No escalation needed.</div></div>`;
-  if (lowest<=totalHigh) return `<div class="appr-box wn"><div class="appr-title">&#9888; Approval Required &mdash; Senior Agent or Above</div><div class="appr-desc">Lowest bid (${fmt(lowest)}) is between the adjusted medium (${fmt(totalMed)}) and high (${fmt(totalHigh)}) benchmarks.</div></div>`;
-  return `<div class="appr-box er"><div class="appr-title">&#9888; Escalation Required &mdash; Senior Manager</div><div class="appr-desc">Lowest bid (${fmt(lowest)}) exceeds the adjusted high benchmark (${fmt(totalHigh)}). Senior Manager approval required.</div></div>`;
+  if (lowest<=totalMed) return `<div class="appr-box ok"><div class="appr-title">&#10003; Auto-Approved &mdash; Agent Can Proceed</div><div class="appr-desc">Lowest bid (${fmt(lowest)}) is at or below the proposal (${fmt(totalMed)}). No escalation needed.</div></div>`;
+  if (lowest<=totalHigh) return `<div class="appr-box wn"><div class="appr-title">&#9888; Approval Required &mdash; Senior Agent or Above</div><div class="appr-desc">Lowest bid (${fmt(lowest)}) is between the proposal mid (${fmt(totalMed)}) and high (${fmt(totalHigh)}) range.</div></div>`;
+  return `<div class="appr-box er"><div class="appr-title">&#9888; Escalation Required &mdash; Senior Manager</div><div class="appr-desc">Lowest bid (${fmt(lowest)}) exceeds the proposal high estimate (${fmt(totalHigh)}). Senior Manager approval required.</div></div>`;
 }
 
 function getApprovalStatus(lowest,activeSvcs,totalMed,totalHigh) {
@@ -2409,8 +2508,7 @@ function buildPrintInvoice(city,activeSvcs,validBids,lowestA,lowestBid,totalRef,
   activeSvcs.forEach((svc, i) => {
     const s = SERVICES.find(x => x.id === svc.svcId);
     if (!s) return;
-    const tr = svc.travel === 'yes';
-    const travelAmt = tr ? (s.travel || 0) : 0;
+    const travelAmt = getTravelCost(svc, s, city);
 
     // Service header row — Flix Grey bg, green category label, Nunito subline weight
     allSvcRows += `<tr style="background:#FFFFFF;border-top:2px solid ${BRAND.green}">
@@ -2426,8 +2524,7 @@ function buildPrintInvoice(city,activeSvcs,validBids,lowestA,lowestBid,totalRef,
       if (!trade) return;
       const hrsEl = document.getElementById('lhrs_' + svc.idx + '_' + li);
       const hrs = hrsEl ? (parseFloat(hrsEl.value) || 0) : (defHrs || 0);
-      const r = LABOR_RATES[trade] || {med:0};
-      const adjRate = r.med * city.laborMult;
+      const adjRate = getEffectiveLaborRate(svc, trade, city, li);
       const sub = adjRate * hrs;
       laborTotal += sub;
       allSvcRows += `<tr style="background:#FFFFFF;border-bottom:1px solid #F7F7F7">
@@ -2591,12 +2688,12 @@ function buildPrintInvoice(city,activeSvcs,validBids,lowestA,lowestBid,totalRef,
       <div style="display:flex;gap:8px;margin-bottom:8px">
         <div style="flex:1;border:1px solid ${BRAND.g4};padding:8px 10px;background:${BRAND.white}">
           <div style="font-family:${BRAND.fontBody};font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${BRAND.g3};margin-bottom:4px">Benchmark</div>
-          <div style="font-family:${BRAND.fontHead};font-size:20px;font-weight:700;color:${BRAND.grey};line-height:1">${fmt(totalMed)}</div>
+          <div style="font-family:${BRAND.fontHead};font-size:20px;font-weight:700;color:${BRAND.grey};line-height:1">${fmt(totalRef)}</div>
           <div style="font-family:${BRAND.fontBody};font-size:10px;color:${BRAND.g3};margin-top:3px;letter-spacing:.02em">MED · labor + travel + materials</div>
         </div>
         <div style="flex:1;border:1px solid ${BRAND.g4};padding:8px 10px;background:${BRAND.white}">
-          <div style="font-family:${BRAND.fontBody};font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${BRAND.g3};margin-bottom:4px">Adjusted Benchmark</div>
-          <div style="font-family:${BRAND.fontHead};font-size:20px;font-weight:700;color:${adjBench>totalMed?'#dc3545':BRAND.grey};line-height:1">${fmt(adjBench)}</div>
+          <div style="font-family:${BRAND.fontBody};font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${BRAND.g3};margin-bottom:4px">Proposal</div>
+          <div style="font-family:${BRAND.fontHead};font-size:20px;font-weight:700;color:${adjBench>totalRef?'#dc3545':BRAND.grey};line-height:1">${fmt(adjBench)}</div>
           <div style="font-family:${BRAND.fontBody};font-size:10px;color:${BRAND.g3};margin-top:3px;letter-spacing:.02em">Live proposal costs applied</div>
         </div>
         <!-- Winner card: green border only -->
@@ -2608,8 +2705,8 @@ function buildPrintInvoice(city,activeSvcs,validBids,lowestA,lowestBid,totalRef,
       </div>
       <!-- Variance bar: left accent border, brand color -->
       <div style="border-left:3px solid ${benchDiff<=0?BRAND.green:'#dc3545'};padding:6px 10px;background:${benchDiff<=0?'#f4fcd6':'#fde8ea'};display:flex;justify-content:space-between;align-items:center">
-        <span style="font-family:${BRAND.fontBody};font-size:11px;font-weight:700;color:${benchDiff<=0?'#3a5f00':'#8b1a24'}">Variance vs. Benchmark</span>
-        <span style="font-family:${BRAND.fontHead};font-size:18px;font-weight:700;color:${benchDiff<=0?'#3a5f00':'#dc3545'}">${benchDiff<=0?'−':'+'}${fmt(Math.abs(benchDiff))}<span style="font-family:${BRAND.fontBody};font-size:11px;font-weight:700;margin-left:6px">${benchDiff<=0?'Under':'Over'} Benchmark</span></span>
+        <span style="font-family:${BRAND.fontBody};font-size:11px;font-weight:700;color:${benchDiff<=0?'#3a5f00':'#8b1a24'}">Variance vs. Proposal</span>
+        <span style="font-family:${BRAND.fontHead};font-size:18px;font-weight:700;color:${benchDiff<=0?'#3a5f00':'#dc3545'}">${benchDiff<=0?'−':'+'}${fmt(Math.abs(benchDiff))}<span style="font-family:${BRAND.fontBody};font-size:11px;font-weight:700;margin-left:6px">${benchDiff<=0?'Under':'Over'} Proposal</span></span>
       </div>
     </div>
 
@@ -2642,8 +2739,8 @@ function buildPrintInvoice(city,activeSvcs,validBids,lowestA,lowestBid,totalRef,
         <div style="border-left:3px solid ${ac.border};padding:8px 10px;background:${BRAND.white}">
           <div style="font-family:${BRAND.fontHead};font-size:14px;font-weight:700;color:${BRAND.grey};line-height:1.2;margin-bottom:4px">${apprText}</div>
           <div style="font-family:${BRAND.fontBody};font-size:11px;color:${BRAND.g1};line-height:1.4;letter-spacing:.01em">
-            Bid: <strong>${fmt(lowestA)}</strong> &nbsp;·&nbsp; Benchmark: <strong>${fmt(totalMed)}</strong><br>
-            Adj. Benchmark: <strong>${fmt(adjBench)}</strong> &nbsp;·&nbsp; Variance: <strong style="color:${benchDiff<=0?'#3a5f00':'#dc3545'}">${benchDiff<=0?'−':'+'}${fmt(Math.abs(benchDiff))}</strong>
+            Bid: <strong>${fmt(lowestA)}</strong> &nbsp;·&nbsp; Benchmark: <strong>${fmt(totalRef)}</strong><br>
+            Proposal: <strong>${fmt(adjBench)}</strong> &nbsp;·&nbsp; Variance vs. Proposal: <strong style="color:${benchDiff<=0?'#3a5f00':'#dc3545'}">${benchDiff<=0?'−':'+'}${fmt(Math.abs(benchDiff))}</strong>
           </div>
         </div>
       </div>
@@ -3055,9 +3152,9 @@ function unlockRequestDate() {
     // Fresh start &mdash; Service 1 + static Service 2 toggle only
     services = [];
     svcCount = 1;
-    services.push({idx:1, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes'});
+    services.push({idx:1, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes', travelOverride:'', bdSnap:{}});
     svcCount = 2;
-    services.push({idx:2, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes'});
+    services.push({idx:2, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes', travelOverride:'', bdSnap:{}});
     try { renderServicesDOM(); } catch(e) {}
     const _initDate = getCSTDate(); document.getElementById('reqDate').value=_initDate; if(window.dpSetDate) window.dpSetDate(_initDate);
     // Pre-populate bid #1
