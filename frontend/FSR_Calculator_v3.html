@@ -1789,7 +1789,7 @@ function buildBreakdown(svc) {
               <button type="button" class="spin-btn" onmousedown="event.preventDefault()" onclick="stepQty('${uid}',-1)" tabindex="-1"><svg viewBox="0 0 8 5" fill="none"><path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             </div>
           </div>
-          <span class="lr-rate-badge">City-adjusted: $${adjLow}–$${adjHigh}/Hr</span>
+          <span class="lr-rate-badge">$${adjLow}–$${adjHigh}/Hr</span>
           <div class="spin-wrap">
             <input type="number" class="lr-rate-override" id="${ruid}" value="${savedRate}" min="0" step="1" placeholder="Benchmark: $${adjMed}/Hr" title="Override labor rate — does not affect Benchmark" oninput="recalcBreakdown(${svc.idx})">
             <div class="spin-btns">
@@ -1856,7 +1856,7 @@ function buildBreakdown(svc) {
                 <button type="button" class="spin-btn" onmousedown="event.preventDefault()" onclick="stepQty('${uid}',-1)" tabindex="-1"><svg viewBox="0 0 8 5" fill="none"><path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
               </div>
             </div>
-            <span class="lr-rate-badge" id="dlbadge_${svc.idx}_${i}">${rates ? `City-adjusted: $${adjLow}–$${adjHigh}/Hr` : ''}</span>
+            <span class="lr-rate-badge" id="dlbadge_${svc.idx}_${i}">${rates ? `$${adjLow}–$${adjHigh}/Hr` : ''}</span>
             <div class="spin-wrap">
               <input type="number" class="lr-rate-override" id="${ruid}" value="${savedRate}" min="0" step="1" placeholder="${rates ? `Benchmark: $${adjMed}/Hr` : 'Benchmark: —/Hr'}" title="Override labor rate — does not affect Benchmark" oninput="recalcBreakdown(${svc.idx})">
               <div class="spin-btns">
@@ -1933,7 +1933,7 @@ function buildBreakdown(svc) {
       const adjHigh = Math.round(rates.high * city.laborMult);
       const laborRow = el.closest('.labor-row');
       const badge = laborRow && laborRow.querySelector('.lr-rate-badge');
-      if (badge) badge.textContent = `City-adjusted: $${adjLow}–$${adjHigh}/Hr`;
+      if (badge) badge.textContent = `$${adjLow}–$${adjHigh}/Hr`;
       const hrs = parseFloat(el.value) || 0;
       const wEl = document.getElementById('lwrk_' + svc.idx + '_' + i);
       const workers = wEl ? (parseInt(wEl.value) || 1) : 1;
@@ -2092,7 +2092,7 @@ function laborChanged(svcIdx, rowIdx, trade) {
     const adjLow  = Math.round(rates.low  * city.laborMult);
     const adjHigh = Math.round(rates.high * city.laborMult);
     const adjMed  = Math.round(rates.med  * city.laborMult);
-    if (badgeEl) badgeEl.textContent = `City-adjusted: $${adjLow}–$${adjHigh}/Hr`;
+    if (badgeEl) badgeEl.textContent = `$${adjLow}–$${adjHigh}/Hr`;
     if (rateEl)  rateEl.placeholder  = `Benchmark: $${adjMed}/Hr`;
   } else {
     if (badgeEl) badgeEl.textContent = '';
