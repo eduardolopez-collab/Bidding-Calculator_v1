@@ -307,6 +307,17 @@ table.log-tbl tr:hover td{background:var(--bh)}
   .lr-rate-badge{display:none}
   .lr-rate-override{width:100px}
   .mat-range{display:none}
+  /* Labor row: trade full-width, spinners side-by-side, rate override full-width */
+  .labor-row{flex-wrap:wrap;gap:6px}
+  .lr-trade{flex:0 0 100%;font-size:12px}
+  .lr-workers-lbl{font-size:11px}
+  .lr-sep{display:none}
+  .lr-rate-override{flex:1;width:auto;min-width:0}
+  .lr-total-badge{margin-left:auto}
+  /* Material row: dropdown full-width, qty+cost on same line */
+  .mat-row{flex-wrap:wrap;gap:6px}
+  .mat-item{flex:0 0 100%;max-width:100%}
+  .mat-cost{flex:1;width:auto;min-width:0}
   table.log-tbl{font-size:11px;min-width:560px}
   table.log-tbl th{font-size:9px;padding:6px 8px}
   table.log-tbl td{padding:7px 8px}
