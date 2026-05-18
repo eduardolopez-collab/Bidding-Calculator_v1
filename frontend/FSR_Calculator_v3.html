@@ -1834,11 +1834,13 @@ function buildBreakdown(svc) {
           const row = document.createElement('div');
           row.className = 'labor-row labor-row-dynamic';
           row.id = 'dlrow_' + svc.idx + '_' + i;
+          const hasSavedTrade = !!savedTrade;
           row.innerHTML = `
-            <select class="lr-trade" id="${tuid}" onchange="laborChanged(${svc.idx},${i},this.value)">
+            <select class="lr-trade" id="${tuid}" onchange="laborChanged(${svc.idx},${i},this.value)" style="display:${hasSavedTrade?'none':'block'}">
               <option value="">— Trade —</option>
               ${tradeOptions}
             </select>
+            <span class="lr-trade dl-trade-label" id="dllabel_${svc.idx}_${i}" style="display:${hasSavedTrade?'inline':'none'};cursor:pointer;text-decoration:underline dotted" title="Click to change trade">${savedTrade}</span>
             <span class="lr-workers-lbl">Workers</span>
             <div class="spin-wrap">
               <input type="number" class="lr-workers" id="${wuid}" value="${savedWrk}" min="1" step="1" title="Number of workers" oninput="recalcBreakdown(${svc.idx})">
@@ -1868,6 +1870,18 @@ function buildBreakdown(svc) {
             <button type="button" class="remove-mat-btn" title="Remove row" onclick="this.closest('.labor-row-dynamic').remove();recalcBreakdown(${svc.idx})">&#x2715;</button>
           `;
           lr.appendChild(row);
+          // Wire label↔select toggle for restored rows that have a saved trade
+          if (hasSavedTrade) {
+            const labelEl = document.getElementById('dllabel_' + svc.idx + '_' + i);
+            const selEl   = document.getElementById('dltrade_' + svc.idx + '_' + i);
+            if (labelEl && selEl) {
+              labelEl.onclick = () => {
+                labelEl.style.display = 'none';
+                selEl.style.display   = 'block';
+                selEl.focus();
+              };
+            }
+          }
         }
       }
 
@@ -2048,10 +2062,11 @@ function addLaborRow(svcIdx) {
   row.className = 'labor-row labor-row-dynamic';
   row.id = 'dlrow_' + svcIdx + '_' + rowIdx;
   row.innerHTML = `
-    <select class="lr-trade" id="${tuid}" onchange="laborChanged(${svcIdx},${rowIdx},this.value)">
+    <select class="lr-trade" id="${tuid}" onchange="laborChanged(${svcIdx},${rowIdx},this.value)" style="display:block">
       <option value="">— Trade —</option>
       ${tradeOptions}
     </select>
+    <span class="lr-trade dl-trade-label" id="dllabel_${svcIdx}_${rowIdx}" style="display:none;cursor:pointer;text-decoration:underline dotted" title="Click to change trade"></span>
     <span class="lr-workers-lbl">Workers</span>
     <div class="spin-wrap">
       <input type="number" class="lr-workers" id="${wuid}" value="1" min="1" step="1" title="Number of workers" oninput="recalcBreakdown(${svcIdx})">
@@ -2086,8 +2101,10 @@ function addLaborRow(svcIdx) {
 function laborChanged(svcIdx, rowIdx, trade) {
   const city = getCity();
   const rates = LABOR_RATES[trade];
-  const rateEl  = document.getElementById('dlrate_' + svcIdx + '_' + rowIdx);
-  const badgeEl = document.getElementById('dlbadge_' + svcIdx + '_' + rowIdx);
+  const rateEl   = document.getElementById('dlrate_'  + svcIdx + '_' + rowIdx);
+  const badgeEl  = document.getElementById('dlbadge_' + svcIdx + '_' + rowIdx);
+  const selEl    = document.getElementById('dltrade_' + svcIdx + '_' + rowIdx);
+  const labelEl  = document.getElementById('dllabel_' + svcIdx + '_' + rowIdx);
   if (rates && city) {
     const adjLow  = Math.round(rates.low  * city.laborMult);
     const adjHigh = Math.round(rates.high * city.laborMult);
@@ -2097,6 +2114,17 @@ function laborChanged(svcIdx, rowIdx, trade) {
   } else {
     if (badgeEl) badgeEl.textContent = '';
     if (rateEl)  rateEl.placeholder  = 'Benchmark: —/Hr';
+  }
+  // Collapse dropdown to flat label once a trade is chosen
+  if (trade && selEl && labelEl) {
+    labelEl.textContent = trade;
+    labelEl.onclick = () => {
+      labelEl.style.display = 'none';
+      selEl.style.display   = 'block';
+      selEl.focus();
+    };
+    selEl.style.display   = 'none';
+    labelEl.style.display = 'inline';
   }
   recalcBreakdown(svcIdx);
 }
