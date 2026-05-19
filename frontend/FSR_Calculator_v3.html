@@ -1703,7 +1703,7 @@ function updateUnitInfo(svc) {
   const infoEl = document.getElementById('info_'+svc.idx);
   if (!s) return;
   const unitDisplay = toTitleCase(s.unit);
-  if (unitEl) unitEl.textContent = unitDisplay;
+  if (unitEl) unitEl.value = unitDisplay;
   if (!infoEl) return;
   const city = getCity();
   const travOverrideEl = document.getElementById('trav_override_' + svc.idx);
@@ -1729,15 +1729,15 @@ function updateUnitInfo(svc) {
   if (s.sp==='Pest') h+=`<div class=”proc-note”>&#9432; Pest &mdash; Removal handled by Procurement.</div>`;
   infoEl.innerHTML = h;
   buildBreakdown(svc);
+  const measField = document.getElementById('meas_field_' + svc.idx);
   const measLbl   = document.getElementById('meas_lbl_'   + svc.idx);
-  const measInput = document.getElementById('meas_'        + svc.idx);
-  if (s && s.ub) {
-    if (measLbl)  measLbl.textContent  = 'Measurement (' + s.unit.replace(/^Per /i,'') + ')';
-    if (unitEl)   unitEl.textContent   = s.unit.replace(/^Per /i,'');
-    if (measInput) { measInput.disabled = false; measInput.placeholder = '0'; }
-  } else {
-    if (measLbl)  measLbl.textContent  = 'Unit';
-    if (measInput) { measInput.disabled = true; measInput.value = ''; measInput.placeholder = '—'; }
+  if (measField) {
+    if (s && s.ub) {
+      measField.style.display = 'flex';
+      if (measLbl) measLbl.textContent = s.unit.replace(/^Per /i,'');
+    } else {
+      measField.style.display = 'none';
+    }
   }
 }
 
