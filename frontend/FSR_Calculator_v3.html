@@ -134,7 +134,7 @@ body{background:var(--bp);color:var(--tp);min-height:100vh;transition:background
 .lr-rate-override::-webkit-inner-spin-button,.lr-rate-override::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 /* Custom spin wrapper &mdash; wraps the number input, adds up/down SVG buttons */
 .spin-wrap{position:relative;display:flex;align-items:stretch}
-.spin-wrap input[type=number]{padding-right:28px;flex:1;min-width:0}
+.spin-wrap input[type=number]{padding-left:6px;padding-right:28px;flex:1;min-width:0}
 .spin-btns{position:absolute;right:1px;top:1px;bottom:1px;width:26px;display:flex;flex-direction:column;border-left:1px solid var(--bm);border-radius:0 7px 7px 0;overflow:hidden}
 .spin-btn{flex:1;background:var(--bi);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--tm);padding:0;transition:background .12s}
 .spin-btn:hover{background:var(--bh);color:var(--tp)}
@@ -1908,6 +1908,8 @@ function buildBreakdown(svc) {
         const adjHigh = mat ? Math.round(mat.high * city.matMult * 100) / 100 : 0;
         const adjMedMat = mat ? Math.round(mat.med * city.matMult * 100) / 100 : 0;
         const rangeText = mat ? `$${adjLow}–$${adjHigh} / ${mat.unit}` : '';
+        const initMatCost = mp.cost !== '' ? parseFloat(mp.cost) : adjMedMat;
+        const initMatTotal = initMatCost * (parseFloat(mp.qty) || 0);
         const uid = 'mrow_' + svc.idx + '_' + i;
         const matOptions = catMats.map(m =>
           `<option value="${m.id}"${m.id === mp.matId ? ' selected' : ''}>${esc(m.item)}</option>`
@@ -1932,6 +1934,7 @@ function buildBreakdown(svc) {
               <button type="button" class="spin-btn" onmousedown="event.preventDefault()" onclick="stepQty('mcost_${svc.idx}_${i}',-1)" tabindex="-1"><svg viewBox="0 0 8 5" fill="none"><path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             </div>
           </div>
+          <span class="lr-total-badge" id="mtot_${svc.idx}_${i}">${initMatTotal > 0 ? fmt(initMatTotal) : '—'}</span>
           <button type="button" class="remove-mat-btn" title="Remove material row" onclick="if(confirm('Remove this material row?'))this.closest('.mat-row').remove(),recalcBreakdown(${svc.idx})">&#x2715;</button>
         </div>`;
       }).join('');
@@ -2041,6 +2044,7 @@ function addMatRow(svcIdx) {
         <button type="button" class="spin-btn" onmousedown="event.preventDefault()" onclick="stepQty('mcost_${svcIdx}_${rowIdx}',-1)" tabindex="-1"><svg viewBox="0 0 8 5" fill="none"><path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </div>
     </div>
+    <span class="lr-total-badge" id="mtot_${svcIdx}_${rowIdx}">—</span>
     <button type="button" class="remove-mat-btn" title="Remove material row" onclick="if(confirm('Remove this material row?'))this.closest('.mat-row').remove(),recalcBreakdown(${svcIdx})">&#x2715;</button>
   `;
   mr.appendChild(row);
@@ -2179,15 +2183,17 @@ function recalcBreakdown(svcIdx) {
   let matTotal = 0;
   const mr = document.getElementById('mat_rows_' + svcIdx);
   if (mr) {
-    mr.querySelectorAll('.mat-row').forEach(row => {
-      const sel  = row.querySelector('.mat-item');
-      const qtyEl = row.querySelector('.mat-qty');
+    mr.querySelectorAll('.mat-row').forEach((row, i) => {
+      const sel    = row.querySelector('.mat-item');
+      const qtyEl  = row.querySelector('.mat-qty');
       const costEl = row.querySelector('.mat-cost');
+      const totEl  = row.querySelector('.lr-total-badge');
       const mat = sel && sel.value ? MATERIALS.find(x => x.id === sel.value) : null;
       const qty = qtyEl ? (parseFloat(qtyEl.value) || 0) : 0;
-      // Use vendor cost if entered, otherwise use materials med benchmark
       const unitCost = costEl && costEl.value !== '' ? parseFloat(costEl.value) : (mat ? mat.med * city.matMult : 0);
-      matTotal += unitCost * qty;
+      const rowTotal = unitCost * qty;
+      if (totEl) totEl.textContent = rowTotal > 0 ? fmt(rowTotal) : '—';
+      matTotal += rowTotal;
     });
   }
   // Travel cost — folded into Labor chip to match Labor Benchmark card
