@@ -1701,7 +1701,12 @@ function updateUnitInfo(svc) {
   const s = SERVICES.find(x=>x.id===svc.svcId);
   const unitEl = document.getElementById('unit_'+svc.idx);
   const infoEl = document.getElementById('info_'+svc.idx);
-  if (!s) return;
+  if (!s) {
+    if (unitEl) unitEl.textContent = '—';
+    const mi = document.getElementById('meas_' + svc.idx);
+    if (mi) { mi.disabled = true; mi.value = ''; mi.placeholder = '—'; }
+    return;
+  }
   const unitDisplay = toTitleCase(s.unit);
   if (unitEl) unitEl.textContent = unitDisplay;
   if (!infoEl) return;
