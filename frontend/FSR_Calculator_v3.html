@@ -313,6 +313,8 @@ table.log-tbl tr:hover td{background:var(--bh)}
   .bd-total{flex:1;min-width:80px}
   .lr-rate-badge,.mat-range{display:none !important}
   .lr-rate-override{width:120px}
+  .labor-row+.labor-row,.labor-row-dynamic+.labor-row-dynamic,.labor-row+.labor-row-dynamic{border-top:1px solid var(--fg);padding-top:6px;margin-top:2px}
+  .mat-row+.mat-row{border-top:1px solid var(--fg);padding-top:6px;margin-top:2px}
   /* Metric cards: stack value + delta badge vertically */
   .metric{padding:10px 12px}
   .m-val{font-size:20px}
@@ -382,6 +384,7 @@ table.log-tbl tr:hover td{background:var(--bh)}
 .svc-half-label::before{content:'';display:inline-block;width:3px;height:12px;border-radius:2px;background:var(--ac)}
 .svc-half-label::after{content:'';flex:1;height:1px;background:var(--bd)}
 .svc-half-divider{border:none;border-top:1px dashed var(--bd);margin:16px 0}
+.bd-section-divider{border:none;border-top:1px solid var(--bd);margin:10px 0}
 .breakdown-totals{display:flex;justify-content:flex-end;gap:8px;margin-top:12px;padding-top:8px;border-top:1px solid var(--bd);flex-wrap:wrap}
 .bd-total{background:var(--bi);border:1px solid var(--bd);border-radius:6px;padding:5px 10px;text-align:left}
 .bd-total-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--tm)}
@@ -1614,6 +1617,7 @@ function buildServiceFields(svc, ordinal) {
       <div class="breakdown-label">&#9874; Labor</div>
       <div id="labor_rows_${svc.idx}"></div>
       <button type="button" class="add-lab-btn" onclick="addLaborRow(${svc.idx})">+ Add Laborer</button>
+      <hr class="bd-section-divider">
       <div class="breakdown-label" style="margin-top:10px">&#9726; Materials</div>
       <div id="mat_rows_${svc.idx}"></div>
       <button type="button" class="add-mat-btn" onclick="addMatRow(${svc.idx})">+ Add Material</button>
