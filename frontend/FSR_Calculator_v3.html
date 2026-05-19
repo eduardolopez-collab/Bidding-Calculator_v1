@@ -390,7 +390,7 @@ select.lr-trade{background:var(--bi) url("data:image/svg+xml,%3Csvg width='12' h
 .lr-workers{width:60px;min-width:44px;font-size:12px;background:var(--bi);color:var(--tp);border:1px solid var(--bm);border-radius:6px;padding:4px 8px;-webkit-appearance:none;appearance:none}
 .lr-workers-lbl{font-size:10px;color:var(--tm);white-space:nowrap}
 .lr-sep{width:1px;height:20px;background:var(--bd);margin:0 4px;flex-shrink:0}
-.lr-rate-badge{font-size:11px;color:var(--tm);flex:1 1 0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lr-rate-badge{font-size:11px;color:var(--tm);flex:1 1 0;min-width:0;overflow:hidden;white-space:nowrap}
 .lr-rate-override{width:160px;min-width:90px;font-size:12px;background:var(--bi);color:var(--tp);border:1px solid var(--bm);border-radius:6px;padding:4px 8px;-webkit-appearance:none;appearance:none;transition:border-color .15s,color .15s}
 .lr-rate-override:focus{outline:none;border-color:var(--in-b)}
 .lr-rate-override:not(:placeholder-shown){border-color:var(--in-b);color:var(--in-t)}
@@ -398,7 +398,7 @@ select.lr-trade{background:var(--bi) url("data:image/svg+xml,%3Csvg width='12' h
 .mat-item{flex:none;width:auto;background:var(--bi) url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238B8B8B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E") no-repeat right 8px center/12px 8px;color:var(--tp);border:1px solid var(--bm);border-radius:6px;padding:4px 28px 4px 8px;font-size:12px;font-family:'Roboto',sans-serif;-webkit-appearance:none;appearance:none;cursor:pointer}
 [data-theme="light"] .mat-item{background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23757575' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E")}
 .mat-qty{width:60px;min-width:44px;font-size:12px;background:var(--bi);color:var(--tp);border:1px solid var(--bm);border-radius:6px;padding:4px 8px;-webkit-appearance:none;appearance:none}
-.mat-range{font-size:11px;color:var(--tm);flex:1 1 0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mat-range{font-size:11px;color:var(--tm);flex:1 1 0;min-width:0;overflow:hidden;white-space:nowrap}
 .mat-cost{width:160px;min-width:120px;font-size:12px;background:var(--bi);color:var(--tp);border:1px solid var(--bm);border-radius:6px;padding:4px 8px;transition:border-color .15s,color .15s}
 .mat-cost:focus{outline:none;border-color:var(--in-b)}
 .mat-cost:not(:placeholder-shown){border-color:var(--in-b);color:var(--in-t)}
@@ -1986,6 +1986,7 @@ function buildBreakdown(svc) {
     if (tvEl)    tvEl.textContent  = travelCost > 0 ? fmt(travelCost) : '—';
     if (mEl)     mEl.textContent   = matTotal > 0 ? fmt(matTotal) : '—';
     if (cEl)     cEl.textContent   = (laborWithTravel + matTotal) > 0 ? fmt(laborWithTravel + matTotal) : '—';
+    _updateSublineBadges();
   } finally {
     _rebuilding = _prevRebuilding;
   }
@@ -2210,6 +2211,7 @@ function recalcBreakdown(svcIdx) {
   if (tvEl2)    tvEl2.textContent  = travelCost > 0 ? fmt(travelCost) : '—';
   if (mEl)      mEl.textContent   = matTotal        > 0 ? fmt(matTotal)        : '—';
   if (cEl)      cEl.textContent   = (laborWithTravel + matTotal) > 0 ? fmt(laborWithTravel + matTotal) : '—';
+  _updateSublineBadges();
   recalcResults();
   saveState();
 }
@@ -2354,6 +2356,21 @@ function recalc() {
 
 // Module-level: latest live-DOM combined benchmarks, written by recalcResults, read by submitFSR
 let _combBenchMedLive=0, _combBenchHighLive=0;
+
+// Hide subline badges (.lr-rate-badge, .mat-range) entirely if even 1px is clipped.
+// Called after layout settles via requestAnimationFrame.
+function _updateSublineBadges() {
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.lr-rate-badge, .mat-range').forEach(el => {
+      // Temporarily reveal to measure natural width
+      el.style.visibility = '';
+      el.style.display    = '';
+      if (el.scrollWidth > el.clientWidth) {
+        el.style.display = 'none';
+      }
+    });
+  });
+}
 
 function recalcResults() {
   // Read bid values from DOM
@@ -3398,6 +3415,8 @@ function unlockRequestDate() {
 
   // Auto-save on page unload (best-effort — browsers may suppress this)
   window.addEventListener('beforeunload', saveState);
+  // Re-evaluate subline badge visibility whenever the viewport resizes
+  window.addEventListener('resize', _updateSublineBadges);
 
   // Continuous auto-save: save immediately on every input/change so a refresh
   // at any moment retains the latest data. No debounce — storage writes are fast.
