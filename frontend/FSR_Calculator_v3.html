@@ -1157,7 +1157,7 @@ function saveState() {
     priority: document.getElementById('priority').value,
     date: document.getElementById('reqDate').value,
     desc: document.getElementById('reqDesc').value,
-    services: services.map(s=>({idx:s.idx,on:s.on,catVal:s.catVal,svcId:s.svcId,qty:s.qty,tier:s.tier,travel:s.travel,travelOverride:s.travelOverride||'',bdSnap:s.bdSnap||{}})),
+    services: services.map(s=>({idx:s.idx,on:s.on,catVal:s.catVal,svcId:s.svcId,qty:s.qty,tier:s.tier,travel:s.travel,travelOverride:s.travelOverride||'',measurement:s.measurement||'',bdSnap:s.bdSnap||{}})),
     bids: bids,
     bidCount: bidCount,
     svcCount: svcCount,
@@ -1211,6 +1211,7 @@ function restoreState() {
         tier:   s.tier   || '',
         travel:         s.travel         || 'yes',
         travelOverride: s.travelOverride != null ? s.travelOverride : '',
+        measurement:    s.measurement    || '',
         bdSnap: s.bdSnap || {}
       }));
       svcCount = Math.max(svcCount, ...services.map(s=>s.idx));
@@ -1219,9 +1220,9 @@ function restoreState() {
       // No services saved — render the default two slots but don't touch other fields
       services = [];
       svcCount = 1;
-      services.push({idx:1, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes', travelOverride:'', bdSnap:{}});
+      services.push({idx:1, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes', travelOverride:'', measurement:'', bdSnap:{}});
       svcCount = 2;
-      services.push({idx:2, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes', travelOverride:'', bdSnap:{}});
+      services.push({idx:2, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes', travelOverride:'', measurement:'', bdSnap:{}});
       renderServicesDOM();
     }
   } catch(e) {
@@ -1310,9 +1311,9 @@ function confirmClear() {
   // Reset services &mdash; Service 1 + static Service 2 slot only
   services = [];
   svcCount = 1;
-  services.push({idx:1, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes', travelOverride:'', bdSnap:{}}); // Service 1
+  services.push({idx:1, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes', travelOverride:'', measurement:'', bdSnap:{}}); // Service 1
   svcCount = 2;
-  services.push({idx:2, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes', travelOverride:'', bdSnap:{}}); // Static "Add 2nd" toggle
+  services.push({idx:2, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes', travelOverride:'', measurement:'', bdSnap:{}}); // Static "Add 2nd" toggle
   renderServicesDOM();
   // Reset bids to one empty bid
   bids = []; bidCount = 0;
@@ -1407,6 +1408,7 @@ function addServiceSlot(restored) {
     tier:   restored ? restored.tier   : '',
     travel:         restored ? restored.travel         : 'yes',
     travelOverride: restored ? (restored.travelOverride || '') : '',
+    measurement:    restored ? (restored.measurement    || '') : '',
     bdSnap:         restored ? (restored.bdSnap || {})  : {}
   };
   services.push(svc);
@@ -1590,6 +1592,11 @@ function buildServiceFields(svc, ordinal) {
           style="${svc.travelOverride?'border-color:var(--in-b);color:var(--in-t)':''}">
       </div>
       <div class="field"><label>Unit</label><input type="text" id="unit_${svc.idx}" readonly></div>
+      <div class="field" id="meas_field_${svc.idx}" style="display:none">
+        <label id="meas_lbl_${svc.idx}">Measurement</label>
+        <input type="number" id="meas_${svc.idx}" min="0" step="1" placeholder="0"
+          value="${svc.measurement||''}" oninput="measurementChanged(${svc.idx},this.value)">
+      </div>
     </div>
     <div id="info_${svc.idx}"></div>
     <hr class="svc-half-divider">
@@ -1644,7 +1651,7 @@ function toggleService(idx) {
     // we don't double-add.
     if (svcIndex === services.length - 1) {
       svcCount = Math.max(svcCount, ...services.map(s=>s.idx)) + 1;
-      services.push({idx:svcCount, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes', travelOverride:'', bdSnap:{}});
+      services.push({idx:svcCount, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes', travelOverride:'', measurement:'', bdSnap:{}});
     }
   } else {
     // â”€â”€ Turning OFF â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -1722,6 +1729,36 @@ function updateUnitInfo(svc) {
   if (s.sp==='Pest') h+=`<div class=”proc-note”>&#9432; Pest &mdash; Removal handled by Procurement.</div>`;
   infoEl.innerHTML = h;
   buildBreakdown(svc);
+  const measField = document.getElementById('meas_field_' + svc.idx);
+  const measLbl   = document.getElementById('meas_lbl_'   + svc.idx);
+  if (measField) {
+    if (s && s.ub) {
+      measField.style.display = 'flex';
+      if (measLbl) measLbl.textContent = s.unit.replace(/^Per /i,'');
+    } else {
+      measField.style.display = 'none';
+    }
+  }
+}
+
+function measurementChanged(svcIdx, val) {
+  const svc = services.find(s => s.idx === svcIdx);
+  if (!svc) return;
+  svc.measurement = val;
+  const s = SERVICES.find(x => x.id === svc.svcId);
+  if (!s || !s.ub) return;
+  const m = parseFloat(val) || 0;
+  [[s.h1,0],[s.h2,1]].forEach(([h,i]) => {
+    if (h === undefined || h === null) return;
+    const el = document.getElementById('lhrs_' + svcIdx + '_' + i);
+    if (el) el.value = parseFloat((h * m).toFixed(4));
+  });
+  [[s.q1,0],[s.q2,1],[s.q3,2]].forEach(([q,i]) => {
+    if (q === undefined || q === null) return;
+    const el = document.getElementById('mqty_' + svcIdx + '_' + i);
+    if (el) el.value = parseFloat((q * m).toFixed(4));
+  });
+  recalcBreakdown(svcIdx);
 }
 
 function buildBreakdown(svc) {
@@ -1732,7 +1769,7 @@ function buildBreakdown(svc) {
 
   bdEl.style.display = 'block';
   const city = getCity();
-  const qty  = 1;
+  const qty  = s && s.ub ? (parseFloat(svc.measurement) || 1) : 1;
   const lr   = document.getElementById('labor_rows_'  + svc.idx);
   const mr   = document.getElementById('mat_rows_'    + svc.idx);
   if (!lr || !mr) return;
@@ -1898,9 +1935,9 @@ function buildBreakdown(svc) {
           matSlots.push({matId: snap['msel_' + i] || '', qty: snap['mqty_' + i] || '0', cost: snap['mcost_' + i] || ''});
         }
       } else {
-        if (s.m1) matSlots.push({matId: s.m1, qty: s.q1 || 0, cost: ''});
-        if (s.m2) matSlots.push({matId: s.m2, qty: s.q2 || 0, cost: ''});
-        if (s.m3) matSlots.push({matId: s.m3, qty: s.q3 || 0, cost: ''});
+        if (s.m1) matSlots.push({matId: s.m1, qty: parseFloat(((s.q1||0)*qty).toFixed(4)), cost: ''});
+        if (s.m2) matSlots.push({matId: s.m2, qty: parseFloat(((s.q2||0)*qty).toFixed(4)), cost: ''});
+        if (s.m3) matSlots.push({matId: s.m3, qty: parseFloat(((s.q3||0)*qty).toFixed(4)), cost: ''});
         if (!matSlots.length) matSlots.push({matId: '', qty: 1, cost: ''});
       }
       const catMats = MATERIALS;
@@ -2401,7 +2438,7 @@ function recalcResults() {
     activeSvcs.forEach(svc => {
       const s = SERVICES.find(x => x.id === svc.svcId);
       if (!s) return;
-      const qty = 1;
+      const qty = s && s.ub ? (parseFloat(svc.measurement) || 1) : 1;
       const pairs = [];
       if (s.t1) pairs.push({trade:s.t1, rowKey:0});
       if (s.t2) pairs.push({trade:s.t2, rowKey:1});
@@ -2443,7 +2480,7 @@ function recalcResults() {
         });
       }
       // Non-unit-based: travel and materials repeat per qty unit
-      const svcScale = s.ub ? 1 : qty;
+      const svcScale = s.ub ? (parseFloat(svc.measurement) || 1) : qty;
       travelBench    += getMarketTravelCost(svc, s, city) * svcScale;
       travelProposal += getTravelCost(svc, s, city) * svcScale;
       const mr = document.getElementById('mat_rows_' + svc.idx);
@@ -3394,9 +3431,9 @@ function unlockRequestDate() {
     // Fresh start &mdash; Service 1 + static Service 2 toggle only
     services = [];
     svcCount = 1;
-    services.push({idx:1, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes', travelOverride:'', bdSnap:{}});
+    services.push({idx:1, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes', travelOverride:'', measurement:'', bdSnap:{}});
     svcCount = 2;
-    services.push({idx:2, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes', travelOverride:'', bdSnap:{}});
+    services.push({idx:2, on:false, catVal:'', svcId:'', qty:0, tier:'', travel:'yes', travelOverride:'', measurement:'', bdSnap:{}});
     try { renderServicesDOM(); } catch(e) {}
     const _initDate = getCSTDate(); document.getElementById('reqDate').value=_initDate; if(window.dpSetDate) window.dpSetDate(_initDate);
     // Pre-populate bid #1
