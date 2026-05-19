@@ -1453,7 +1453,10 @@ function snapshotAllBreakdowns() {
         if (cost) snap['mcost_' + i] = cost.value;
       });
     }
-    svc.bdSnap = snap;
+    // Only overwrite bdSnap if rows were actually found in the DOM.
+    // An empty snap means the rows haven't been built yet (e.g. service is
+    // toggled off) — preserving the existing bdSnap prevents losing restored data.
+    if (Object.keys(snap).length > 0) svc.bdSnap = snap;
   });
 }
 
