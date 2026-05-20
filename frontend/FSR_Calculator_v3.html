@@ -1972,6 +1972,7 @@ function buildBreakdown(svc) {
             <option value="">— Select materials —</option>
             ${matOptions}
           </select>
+          <span class="lr-workers-lbl">Qty</span>
           <div class="spin-wrap">
             <input type="number" class="mat-qty" id="mqty_${svc.idx}_${i}" value="${mp.qty}" min="0" step="1" title="Quantity" oninput="recalcBreakdown(${svc.idx})">
             <div class="spin-btns">
@@ -2083,6 +2084,7 @@ function addMatRow(svcIdx) {
       <option value="">— Select materials —</option>
       ${matOptions}
     </select>
+    <span class="lr-workers-lbl">Qty</span>
     <div class="spin-wrap">
       <input type="number" class="mat-qty" id="mqty_${svcIdx}_${rowIdx}" value="1" min="0" step="1" title="Quantity" oninput="recalcBreakdown(${svcIdx})">
       <div class="spin-btns">
