@@ -1612,7 +1612,7 @@ function buildServiceFields(svc, ordinal) {
         <div class="unit-meas-wrap">
           <span class="unit-meas-label" id="unit_${svc.idx}">—</span>
           <input type="number" class="unit-meas-input" id="meas_${svc.idx}" min="0" step="1"
-            placeholder="—" value="${svc.measurement||''}" disabled
+            placeholder="e.g. 500" value="${svc.measurement||''}" disabled
             oninput="measurementChanged(${svc.idx},this.value)">
         </div>
       </div>
@@ -1754,7 +1754,7 @@ function updateUnitInfo(svc) {
   if (s.ub) {
     if (measLbl)  measLbl.textContent  = 'Measurement (' + s.unit.replace(/^Per /i,'') + ')';
     if (unitEl)   unitEl.textContent   = s.unit.replace(/^Per /i,'');
-    if (measInput) { measInput.disabled = false; measInput.placeholder = '0'; }
+    if (measInput) { measInput.disabled = false; measInput.placeholder = 'e.g. 500'; }
   } else {
     if (measLbl)  measLbl.textContent  = 'Unit';
     if (measInput) { measInput.disabled = true; measInput.value = ''; measInput.placeholder = '—'; }
